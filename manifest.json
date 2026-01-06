@@ -18,7 +18,7 @@
   {
     "display_name": "MoviesDrive",
     "value": "drive",
-    "version": "1.4",
+    "version": "1.5",
     "icon": "",
     "type": "global",
     "disabled": false
@@ -181,7 +181,7 @@
     "version": "1.0",
     "icon": "",
     "type": "india",
-    "disabled": false
+    "disabled": true
   },
   {
     "display_name": "A.111477",

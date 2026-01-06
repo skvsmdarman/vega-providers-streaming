@@ -14,7 +14,7 @@ export const getPosts = async function ({
 }): Promise<Post[]> {
   const { getBaseUrl } = providerContext;
   const baseUrl = await getBaseUrl("drive");
-  const url = `${baseUrl + filter}/page/${page}/`;
+  const url = `${baseUrl + filter}page/${page}/`;
   return posts({ url, signal, providerContext });
 };
 
@@ -46,25 +46,25 @@ async function posts({
   providerContext: ProviderContext;
 }): Promise<Post[]> {
   try {
+    console.log("Fetching URL:", url);
     const { cheerio } = providerContext;
     const res = await fetch(url, { signal });
     const data = await res.text();
     const $ = cheerio.load(data);
     const catalog: Post[] = [];
-    $(".recent-movies")
-      .children()
-      .map((i, element) => {
-        const title = $(element).find("figure").find("img").attr("alt");
-        const link = $(element).find("a").attr("href");
-        const image = $(element).find("figure").find("img").attr("src");
-        if (title && link && image) {
-          catalog.push({
-            title: title.replace("Download", "").trim(),
-            link: link,
-            image: image,
-          });
-        }
-      });
+    $(".poster-card").map((i, element) => {
+      const title = $(element).find(".poster-title").text();
+      const link = $(element).parent().attr("href");
+      const image = $(element).find(".poster-image img").attr("src");
+      console.log({ title, link, image });
+      if (title && link && image) {
+        catalog.push({
+          title: title.replace("Download", "").trim(),
+          link: link,
+          image: image,
+        });
+      }
+    });
     return catalog;
   } catch (err) {
     console.error("drive error ", err);
